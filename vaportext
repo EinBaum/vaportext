@@ -1,0 +1,44 @@
+#!/usr/bin/python3
+import sys, getopt
+
+vapor_h = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&()*+,-./:;<=>?@[]^_`{|}~'
+vapor_f = '０１２３４５６７８９ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ！゛＃＄％＆（）＊＋、ー。／：；〈＝〉？＠［］＾＿‘｛｜｝～'
+
+vapor_h2f = str.maketrans(vapor_h, vapor_f)
+vapor_f2h = str.maketrans(vapor_f, vapor_h)
+
+def vapor_help():
+    print(sys.argv[0] + " [-h | --help | -v | --version | -r | --reverse]")
+
+def vapor_version():
+    print("1.0")
+
+def main():
+
+    rev = False
+
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "hvr", ["help", "version", "reverse"])
+    except getopt.GetoptError as err:
+        print(str(err))
+        vapor_help()
+        sys.exit(1)
+    for o, a in opts:
+        if o in ("-h" , "--help"):
+            vapor_help()
+            sys.exit(0)
+        elif o in ("-v", "--version"):
+            vapor_version()
+            sys.exit(0)
+        elif o in ("-r", "--reverse"):
+            rev = True
+
+    map = vapor_h2f
+    if (rev):
+        map = vapor_f2h
+
+    for line in sys.stdin:
+        sys.stdout.write(line.translate(map))
+
+if __name__ == "__main__":
+    main()
